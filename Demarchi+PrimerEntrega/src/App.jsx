@@ -12,7 +12,7 @@ function App() {
         <Encabezado />
       </header>
       <main>
-        <ItemListContainer />
+        <ItemListContainer greeting={"Bienvenidos a la tienda!"}/>
       </main>
     </div>
   )
