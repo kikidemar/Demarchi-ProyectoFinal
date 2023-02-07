@@ -20,7 +20,7 @@ export const products = [
         "id": 3,
         "nombre": "Fanta",
         "precio": 420,
-        "category": "noAlcohols",
+        "category": "noAlcohol",
         "descripcion": "Gaseosa"
     },
     {
