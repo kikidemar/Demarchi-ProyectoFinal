@@ -1,13 +1,10 @@
-import { products } from "../../utils/productos"
-import { customFetch } from "../../utils/customFetch"
 import { useEffect, useState } from "react"
 import { ItemList } from "../ItemList"
 import { Heading } from "@chakra-ui/react"
-import { ItemCount } from '../ItemCount'
 import { useParams } from "react-router-dom"
 import { Spinner } from '@chakra-ui/react'
-
-
+import { collection, getDocs } from "firebase/firestore";
+import {db} from "../../../db/firebase-config"
 
 
 const ItemListContainer = ({greeting}) => {
@@ -20,15 +17,23 @@ const { category } = useParams()
 
   useEffect(() => {
     setLoading(true)
-    customFetch(products)
-      .then(res => {
+    const productsCollection = collection(db, "products");
+    const firestore = getDocs(productsCollection);
+
+    firestore.then((snapshot) => {
+      const productos = snapshot.docs.map((doc) => {
+        return { ...doc.data(), id: doc.id };
+      });
         if(category){
         setLoading(false)
-        setListProduct(res.filter(prod => prod.category === category))
+        setListProduct(productos.filter(prod => prod.category === category))
         } else{
           setLoading(false)
-          setListProduct(res)
+          setListProduct(productos)
         }
+      })
+      .catch((err) => {
+        console.log(err);
       })
   }, [category])
 
